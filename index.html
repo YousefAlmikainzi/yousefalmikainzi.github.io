@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio</title>
+
+<script>
+/* ============================================================
+   SETTINGS: fill these in, then save the file.
+   Paste full links between the quotes. Nothing else needs editing.
+   ============================================================ */
+const PORTFOLIO = {
+  name:     "YOUSEF ALMIKAINZI",
+  email:    "yousefalmikainzi2@gmail.com",
+  github:   "https://github.com/YousefAlmikainzi ",
+  linkedin: "https://www.linkedin.com/in/yousef-a-almikainzi-859b37302/",
+
+  projects: {
+    eye:     { video: "https://youtu.be/SwVMKqO2AoE", code: "https://github.com/YousefAlmikainzi/Graphical_Shapes_Opengl" },
+    engraved:{ video: "https://youtu.be/JsiVGO91e-w", code: "https://github.com/YousefAlmikainzi/Engraved" },
+    terrain: { video: "https://youtu.be/YmHK5I2WQuU", code: "https://github.com/YousefAlmikainzi/Environment-HW" },
+    little:  { video: "https://youtu.be/0W6zZ_rxr-o", code: "https://github.com/YousefAlmikainzi/TheLittleThings" }
+  }
+};
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #ffffff;
+    --ink: #000000;
+    --muted: #555555;
+    --grid: #ececec;
+    --axis-x: #ff0000;
+    --axis-y: #00c000;
+    --accent: #4772cc;
+    --font: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:hover { color: var(--ink); }
+  a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  /* Hero: the name sits in the first quadrant of a UV grid,
+     with the red x-axis and green y-axis from the original shader. */
+  .hero {
+    position: relative;
+    min-height: 72vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 96px 0 136px;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    overflow: hidden;
+  }
+  .axis-x, .axis-y { position: absolute; pointer-events: none; }
+  .axis-x { left: 0; right: 0; bottom: 96px; height: 2px; background: var(--axis-x); }
+  .axis-y { top: 0; bottom: 0; left: max(8px, calc((100% - 920px) / 2 + 12px)); width: 2px; background: var(--axis-y); }
+
+  .hero-text {
+    position: relative;
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .name {
+    margin: 0;
+    font-size: clamp(2.6rem, 9vw, 6.4rem);
+    font-stretch: 125%;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+  }
+
+  .role {
+    margin: 20px 0 0;
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    font-stretch: 110%;
+    font-weight: 600;
+  }
+
+  .intro {
+    margin: 16px 0 0;
+    max-width: 58ch;
+    color: var(--muted);
+  }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    font-weight: 600;
+  }
+
+  /* Projects */
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 24px 32px 0;
+  }
+
+  .project { margin-top: 96px; }
+
+  .project h2 {
+    margin: 0;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-stretch: 112%;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .tools {
+    margin: 8px 0 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--ink);
+  }
+  .video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .video .missing {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .description {
+    margin: 20px 0 0;
+    max-width: 62ch;
+  }
+
+  .code-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-weight: 600;
+  }
+
+  footer {
+    max-width: 920px;
+    margin: 128px auto 0;
+    padding: 32px 32px 48px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 72px 0 112px; min-height: 64vh; }
+    .hero-text { padding: 0 20px 0 28px; }
+    .axis-x { bottom: 80px; }
+    main { padding: 8px 20px 0; }
+    .project { margin-top: 72px; }
+    footer { padding: 32px 20px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="axis-x" aria-hidden="true"></div>
+  <div class="axis-y" aria-hidden="true"></div>
+  <div class="hero-text">
+    <h1 class="name" data-field="name">Your Name</h1>
+    <p class="role">Real-time rendering and shader programmer</p>
+    <p class="intro">I build real-time graphics from first principles: shaders, rendering pipelines, and the math underneath them. I spent two years as lead programmer on Unity applications, and most of my graphics work happens on my own time.</p>
+    <ul class="contact">
+      <li><a data-field="github" href="#">GitHub</a></li>
+      <li><a data-field="linkedin" href="#">LinkedIn</a></li>
+      <li><a data-field="email" href="#">Email</a></li>
+    </ul>
+  </div>
+</header>
+
+<main aria-label="Projects">
+
+  <section class="project" data-project="eye">
+    <h2>SDF Eye Shader</h2>
+    <p class="tools">OpenGL, GLSL, C</p>
+    <div class="video" data-title="SDF Eye Shader video"></div>
+    <p class="description">An anti-aliased eye drawn entirely in a fragment shader using signed distance functions. The pupil follows the mouse. I rewrote core functions like mix, smoothstep, and step from scratch to understand exactly how they behave.</p>
+    <a class="code-link" href="#">View the code on GitHub</a>
+  </section>
+
+  <section class="project" data-project="engraved">
+    <h2>Engraved</h2>
+    <p class="tools">Unity, HLSL</p>
+    <div class="video" data-title="Engraved video"></div>
+    <p class="description">A 3D PS1-style action game I built solo, using free art assets. My camera shader recreates the PS1 look with vertex snapping and resolution downscaling, and an animated waterfall shader uses procedural noise I wrote by hand.</p>
+    <a class="code-link" href="#">View the code on GitHub</a>
+  </section>
+
+  <section class="project" data-project="terrain">
+    <h2>Heightmap Terrain with Instanced Grass</h2>
+    <p class="tools">Unity, C#, HLSL</p>
+    <div class="video" data-title="Heightmap terrain video"></div>
+    <p class="description">A Tuwaiq Academy Unity course test asked for a simple beginner scene. I went further and built terrain generated from a heightmap image, covered in grass rendered with GPU instancing, all in my own code and shaders.</p>
+    <a class="code-link" href="#">View the code on GitHub</a>
+  </section>
+
+  <section class="project" data-project="little">
+    <h2>The Little Things</h2>
+    <p class="tools">Unity, C#</p>
+    <div class="video" data-title="The Little Things video"></div>
+    <p class="description">A 2D platformer built with a team. I was the main programmer and built the collectible-based progression and level traversal systems. Art and hand-drawn cutscenes by my teammates.</p>
+    <a class="code-link" href="#">View the code on GitHub</a>
+  </section>
+
+</main>
+
+<footer>
+  <span data-field="footer">© 2026 Your Name</span>
+</footer>
+
+<script>
+(function () {
+  var cfg = PORTFOLIO;
+
+  function isPlaceholder(value) {
+    return !value || value.indexOf("PASTE_") === 0;
+  }
+
+  function youtubeId(url) {
+    var match = String(url).match(/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+
+  // Header and footer
+  document.title = cfg.name + " | Portfolio";
+  document.querySelector('[data-field="name"]').textContent = cfg.name;
+  document.querySelector('[data-field="footer"]').textContent = "© 2026 " + cfg.name;
+  document.querySelector('[data-field="github"]').href = cfg.github;
+  document.querySelector('[data-field="linkedin"]').href = cfg.linkedin;
+  document.querySelector('[data-field="email"]').href = "mailto:" + cfg.email;
+
+  // Projects
+  var sections = document.querySelectorAll("[data-project]");
+  for (var i = 0; i < sections.length; i++) {
+    var section = sections[i];
+    var project = cfg.projects[section.getAttribute("data-project")] || {};
+    var box = section.querySelector(".video");
+    var id = isPlaceholder(project.video) ? null : youtubeId(project.video);
+
+    if (id) {
+      var frame = document.createElement("iframe");
+      frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0";
+      frame.title = box.getAttribute("data-title");
+      frame.loading = "lazy";
+      frame.allow = "accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen";
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      frame.allowFullscreen = true;
+      box.appendChild(frame);
+    } else {
+      var note = document.createElement("p");
+      note.className = "missing";
+      note.textContent = "Video link missing. Paste this project's YouTube link in the settings at the top of the file.";
+      box.appendChild(note);
+    }
+
+    var link = section.querySelector(".code-link");
+    if (isPlaceholder(project.code)) {
+      link.style.display = "none";
+    } else {
+      link.href = project.code;
+    }
+  }
+})();
+</script>
+</body>
+</html>
